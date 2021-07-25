@@ -1,0 +1,10 @@
+common:
+  port: :8080
+  feishu_webhook: http://123123
+#数据库连接信息
+dsn: user:pwd@tcp(host:port)/rtb?charset=utf8&parseTime=True&loc=Local
+#接口访问密码
+pwd_allocated: 123
+#ip白名单
+ip_allocated:
+  - 255.0.0.1
