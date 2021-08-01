@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>一键去水印</title>
+  <meta name="referrer" content="never">
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <link rel="stylesheet" href="./index.css">
@@ -51,7 +52,7 @@
         var _this = this;
         var myVideo = document.getElementById("myVideo")
         axios.post(
-                "http://127.0.0.1:7080/transform",
+                " /api/transform",
                 {
                   pwd: _this.accessKey,
                   source_text: _this.sourceText,
