@@ -67,24 +67,21 @@ func (a *ApiHandler) Transform(c *gin.Context) {
 		})
 		return
 	}
-	rUrls:=[]string{}
+	rUrls := []string{}
 	for _, realUrl := range result {
 		if realUrl != "" {
 			rUrls = append(rUrls, realUrl)
 		}
 	}
-  if len(rUrls)==0 {
-    c.JSON(400, gin.H{
-      "message": "获取失败",
-      "list":    rUrls,
-    })
-    return
-  }
+	if len(rUrls) == 0 {
+		c.JSON(400, gin.H{
+			"message": "获取失败",
+			"list":    rUrls,
+		})
+		return
+	}
 	c.JSON(200, gin.H{
 		"message": "获取成功",
 		"list":    rUrls,
 	})
-}
-func (a *ApiHandler) addRecord() {
-
 }

@@ -39,12 +39,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	port:=viper.GetString("common.port")
+	port := viper.GetString("common.port")
 	dsn := viper.GetString("dsn")
 	accessPwd := viper.GetString("pwd_allocated")
 
 	//初始化数据库
-	dbPool, err := sqlx.Open("mysql", dsn)
+	dbPool, err := sqlx.Connect("mysql", dsn)
 	if err != nil {
 		log.Panicf("mysql connect error: ", err)
 	}

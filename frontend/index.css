@@ -1,0 +1,31 @@
+body {
+  background: black;
+}
+
+foot p {
+  color: white;
+}
+
+h2 {
+  color: white;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+  height: 500px;
+}
+
+.left, .right {
+  background: white;
+  width: 47%;
+  float: left;
+  height: 100%;
+  padding: 10px;
+  border: 5px solid black;
+  border-radius: 10px;
+}
+
+.container span {
+  font-size: 12px;
+}
