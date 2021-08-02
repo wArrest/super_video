@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	log "github.com/sirupsen/logrus"
 	"github.com/wArrest/unwatermark"
+	"strings"
 )
 
 type MEDIA_CHANNEL string
@@ -20,9 +21,8 @@ type BaseParams struct {
 }
 
 type Body struct {
-	Pwd        string        `json:"pwd"`
-	SourceText string        `json:"source_text"`
-	Media      MEDIA_CHANNEL `json:"media"`
+	Pwd        string `json:"pwd"`
+	SourceText string `json:"source_text"`
 }
 type ApiHandler struct {
 	dbPool *sqlx.DB
@@ -50,8 +50,17 @@ func (a *ApiHandler) Transform(c *gin.Context) {
 		return
 	}
 	var result map[string]string
-	switch reqBody.Media {
-	case DOUYIN:
+	if strings.Contains(reqBody.SourceText, "kuaishou") {
+		ks := unwatermark.NewKs([]string{reqBody.SourceText})
+		result = ks.GetResults()
+		if _, ok := result[reqBody.SourceText]; !ok {
+			log.Warnf("无法解析的链接：%s", reqBody.SourceText)
+			c.JSON(400, gin.H{
+				"message": "无法解析的链接",
+			})
+			return
+		}
+	} else if strings.Contains(reqBody.SourceText, "douyin") {
 		douyin := unwatermark.NewDouYin([]string{reqBody.SourceText})
 		result = douyin.GetResults()
 		if _, ok := result[reqBody.SourceText]; !ok {
@@ -61,11 +70,6 @@ func (a *ApiHandler) Transform(c *gin.Context) {
 			})
 			return
 		}
-	default:
-		c.JSON(400, gin.H{
-			"message": "不支持的链接类型",
-		})
-		return
 	}
 	rUrls := []string{}
 	for _, realUrl := range result {
