@@ -14,7 +14,7 @@
 <h2 style="text-align:center">一键去水印</h2>
 <div class="container" id="index">
   <div class="left">
-    <textarea v-model="sourceText" rows="10" cols="77" placeholder="请粘贴抖音/小红书/快手/bilibili分享链接"></textarea>
+    <textarea v-model="sourceText" rows="10" style="width:100%" placeholder="请粘贴抖音/小红书/快手/bilibili分享链接"></textarea>
     <input type="text" v-model="accessKey" placeholder="请输入授权码，特定ip段不需要填写" style="width:300px;">
     <span v-if="msg.show" v-bind:style="{color: msg.color}">{{msg.content}}</span>
     <button v-on:click="transform" type="button" style="float: right;width:70px;">
