@@ -14,7 +14,7 @@
 <h2 style="text-align:center">一键去水印</h2>
 <div class="container" id="index">
   <div class="left">
-    <textarea v-model="sourceText" rows="10" style="width:100%" placeholder="请粘贴抖音/快手(短链接)分享链接"></textarea>
+    <textarea v-model="sourceText" rows="10" style="width:100%" placeholder="请粘贴抖音/快手(短链接)/巨量引擎 分享链接"></textarea>
     <input type="text" v-model="accessKey" placeholder="请输入授权码，特定ip段不需要填写" style="width:300px;">
     <span v-if="msg.show" v-bind:style="{color: msg.color}">{{msg.content}}</span>
     <button v-on:click="transform" type="button" style="float: right;width:70px;">
@@ -22,7 +22,7 @@
     </button>
     <div class="alert">
       <hr>
-      <p>1. 目前支持的媒体渠道：抖音 ☑ 快手 ☑。</p>
+      <p>1. 目前支持的媒体渠道：抖音 ☑ 快手 ☑ 巨量引擎 ☑。</p>
       <p>2. 该项目所有的代码公开可见，欢迎有兴趣的同学，一起完善，<a href="https://github.com/wArrest/unwatermark">unwatermark</a>，如果对你有帮助，不要吝啬你的star🌟。</p>
       <p>3. 如果你有宝贵的建议：warrestlc@gmail.com可邮箱私信我。</p>
       <p>4. 声明❗️：该项目仅用于内部学习，禁止用于商业用途❗❗❗</p>

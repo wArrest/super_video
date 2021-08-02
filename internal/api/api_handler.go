@@ -70,6 +70,16 @@ func (a *ApiHandler) Transform(c *gin.Context) {
 			})
 			return
 		}
+	} else if strings.Contains(reqBody.SourceText, "cc.oceanengine.com") {
+		douyin := unwatermark.NewGuliang([]string{reqBody.SourceText})
+		result = douyin.GetResults()
+		if _, ok := result[reqBody.SourceText]; !ok {
+			log.Warnf("无法解析的链接：%s", reqBody.SourceText)
+			c.JSON(400, gin.H{
+				"message": "无法解析的链接",
+			})
+			return
+		}
 	}
 	rUrls := []string{}
 	for _, realUrl := range result {
