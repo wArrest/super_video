@@ -51,7 +51,7 @@
       transform: function () {
         var _this = this;
         var myVideo = document.getElementById("myVideo")
-        axios.post("http://localhost:7080/transform",
+        axios.post("/api/transform",
                 {
                   pwd: _this.accessKey,
                   source_text: _this.sourceText
