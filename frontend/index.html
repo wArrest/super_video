@@ -57,6 +57,7 @@
     methods: {
       transform: function () {
         var _this = this;
+        _this.msg.show = false
         var myVideo = document.getElementById("myVideo")
         axios.post("/api/transform",
                 {
@@ -68,6 +69,7 @@
           _this.msg.content = "获取成功！"
           myVideo.load();
           _this.realUrl = response.data.list[0];
+          _this.msg.show = true
           myVideo.pause();
         }).catch(function (error) {
           _this.msg.color = "red"
