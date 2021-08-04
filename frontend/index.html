@@ -32,7 +32,18 @@
         <div class="form-item">
           <button class="form-submit" @click="transform">获取</button>
         </div>
+        <p class="form-label">
+          声明
+        </p>
+        <p class="form-subLabel">1. 目前支持的媒体渠道：抖音、快手、巨量引擎。</p>
+        <p class="form-subLabel">2. 该项目所有的代码公开可见，欢迎有兴趣的同学，一起完善，<a href="https://github.com/wArrest/unwatermark">unwatermark</a>，如果对你有帮助，不要吝啬你的star🌟。</p>
+        <p class="form-subLabel">3. 如果你有宝贵的建议：warrestlc@gmail.com可邮箱私信我。</p>
+        <p class="form-subLabel">4. 声明❗️：该项目仅用于内部学习，禁止用于商业用途❗❗❗</p>
+        <p class="form-label">©2021 By Luis</p>
       </div>
+      <transition name="fade">
+        <div v-if="msg.show" class="dialog" :style="{'background': msg.color, 'border': '1px solid '+msg.bdColor}">{{msg.content}}</div>
+      </transition>
     </div>
   </body>
   <script>
@@ -43,11 +54,12 @@
         realUrl: "",
         seen: false,
         accessKey: "",
-        // msg: {
-        //   show: false,
-        //   color: "red",
-        //   content: "",
-        // },
+        msg: {
+          show: false,
+          color: "#2a1215",
+          content: "获取成功",
+          bdColor: "#58181c"
+        },
       },
       methods: {
         transform: function () {
@@ -59,18 +71,24 @@
                 source_text: _this.sourceText
               })
             .then(function (response) {
-              _this.msg.color = "green";
-              _this.msg.content = "获取成功！";
+              _this.showDialog(true, "获取成功!")
               myVideo.load();
               _this.realUrl = response.data.list[0];
               myVideo.pause();
             })
             .catch(function (error) {
-              _this.msg.color = "red";
-              _this.msg.content = "获取失败：" + error.response.data.message;
-              _this.msg.show = true;
+              _this.showDialog(false, "获取失败：" + error.response.data.message)
             });
         },
+        showDialog: function(success, content, dur = 2000) {
+          this.msg.show = true
+          this.msg.content = content
+          this.msg.color = success ? '#162312' : '#2a1215'
+          this.msg.bdColor = success ? '#274916' : '#58181c'
+          setTimeout(() => {
+            this.msg.show = false
+          }, 2000)
+        }
       },
     });
   </script>

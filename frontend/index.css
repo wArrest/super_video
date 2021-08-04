@@ -29,11 +29,15 @@
   margin: 1em;
   font-size: 1.5em;
 }
+.form-subLabel {
+  margin: 1em;
+}
 
 .form-item {
   margin: 1em;
 }
 .form-textarea {
+  resize: none;
   box-sizing: border-box;
   outline: none;
   background-color: rgba(215,215,215,0.1);
@@ -72,8 +76,28 @@
   color:  #3c5c3a;
   transition: 0.25s;
 }
-.form-submit:hover,
-.form-submit:focus {
-  box-shadow: inset 0 -3.25em 0 0 #3c5c3a;
+.form-submit:hover {
+  box-shadow: inset 0 -3.25em 0 0 #42633f;
   color:  #6b8b69;
+}
+
+.dialog {
+  position: fixed;
+  width: 200px;
+  top: 10vh;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  padding: 8px 16px;
+  color: rgba(255,255,255,.85);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.fade-enter-active, .fade-leave-active{
+    transition: all 0.5s ease 
+} 
+.fade-enter, .fade-leave{
+    transform: translateY(-10vh);
+     opacity: 0 
 }
