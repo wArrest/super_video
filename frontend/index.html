@@ -1,83 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>一键去水印</title>
-  <meta name="referrer" content="never">
-  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <link rel="stylesheet" href="./index.css">
-</head>
-<body>
-<br>
-<br>
-<h2 style="text-align:center">一键去水印</h2>
-<div class="container" id="index">
-  <div class="left">
-    <textarea v-model="sourceText" rows="10" style="width:100%" placeholder="请粘贴抖音/快手(短链接)/巨量引擎 分享链接"></textarea>
-    <input type="text" v-model="accessKey" placeholder="请输入授权码，特定ip段不需要填写" style="width:300px;">
-    <span v-if="msg.show" v-bind:style="{color: msg.color}">{{msg.content}}</span>
-    <button v-on:click="transform" type="button" style="float: right;width:70px;">
-      <b>获取</b>
-    </button>
-    <div class="alert">
-      <hr>
-      <p>1. 目前支持的媒体渠道：抖音 ☑ 快手 ☑ 巨量引擎 ☑。</p>
-      <p>2. 该项目所有的代码公开可见，欢迎有兴趣的同学，一起完善，<a href="https://github.com/wArrest/unwatermark">unwatermark</a>，如果对你有帮助，不要吝啬你的star🌟。</p>
-      <p>3. 如果你有宝贵的建议：warrestlc@gmail.com可邮箱私信我。</p>
-      <p>4. 声明❗️：该项目仅用于内部学习，禁止用于商业用途❗❗❗</p>
+  <head>
+    <meta charset="UTF-8">
+    <title>一键去水印</title>
+    <meta name="referrer" content="never">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+    <div id="container">
+      <div class="app-left">
+        <video id="myVideo" width="100%" height="100%" controls="controls">
+          <source v-bind:src="realUrl" type="video/mp4" />
+        </video>
+      </div>
+      <div class="app-right">
+        <h2>一键去水印</h2>
+        <p class="form-label">
+          链接
+        </p>
+        <div class="form-item">
+          <textarea class="form-textarea" v-model="sourceText" placeholder="请粘贴抖音/快手(短链接)分享链接" rows="8"></textarea>
+        </div>
+        <p class="form-label">
+          授权码
+        </p>
+        <div class="form-item">
+          <input class="form-input" v-model="accessKey" placeholder="请输入授权码，特定ip段不需要填写"/>
+        </div>
+        <div class="form-item">
+          <button class="form-submit" @click="transform">获取</button>
+        </div>
+        <p class="form-label">
+          声明
+        </p>
+        <p class="form-subLabel">1. 目前支持的媒体渠道：抖音、快手、巨量引擎。</p>
+        <p class="form-subLabel">2. 该项目所有的代码公开可见，欢迎有兴趣的同学，一起完善，<a href="https://github.com/wArrest/unwatermark">unwatermark</a>，如果对你有帮助，不要吝啬你的star🌟。</p>
+        <p class="form-subLabel">3. 如果你有宝贵的建议：warrestlc@gmail.com可邮箱私信我。</p>
+        <p class="form-subLabel">4. 声明❗️：该项目仅用于内部学习，禁止用于商业用途❗❗❗</p>
+        <p class="form-label">©2021 By Luis</p>
+      </div>
+      <transition name="fade">
+        <div v-if="msg.show" class="dialog" :style="{'background': msg.color, 'border': '1px solid '+msg.bdColor}">{{msg.content}}</div>
+      </transition>
     </div>
-  </div>
-  <div class="right">
-    <video id="myVideo" width="100%" height="100%" controls="controls">
-      <source v-bind:src="realUrl" type="video/mp4"/>
-    </video>
-  </div>
-  <br><br>
-  <foot style="text-align:center;">
-    <p>©2021 By Luis</p>
-  </foot>
-</div>
-
-</body>
-<script>
-  var app = new Vue({
-    el: '#index',
-    data: {
-      sourceText: "",
-      realUrl: "",
-      seen: false,
-      accessKey: "",
-      msg: {
-        show: false,
-        color: "red",
-        content: ""
-      }
-    },
-    methods: {
-      transform: function () {
-        var _this = this;
-        _this.msg.show = false
-        var myVideo = document.getElementById("myVideo")
-        axios.post("/api/transform",
-                {
-                  pwd: _this.accessKey,
-                  source_text: _this.sourceText
-                }
-        ).then(function (response) {
-          _this.msg.color = "green"
-          _this.msg.content = "获取成功！"
-          myVideo.load();
-          _this.realUrl = response.data.list[0];
-          _this.msg.show = true
-          myVideo.pause();
-        }).catch(function (error) {
-          _this.msg.color = "red"
-          _this.msg.content = "获取失败：" + error.response.data.message
-          _this.msg.show = true
-        });
-      }
-    }
-  })
-</script>
+  </body>
+  <script>
+    var app = new Vue({
+      el: "#container",
+      data: {
+        sourceText: "",
+        realUrl: "",
+        seen: false,
+        accessKey: "",
+        msg: {
+          show: false,
+          color: "#2a1215",
+          content: "获取失败",
+          bdColor: "#58181c"
+        },
+      },
+      methods: {
+        transform: function () {
+          var _this = this;
+          var myVideo = document.getElementById("myVideo");
+          axios
+            .post("/api/transform",{
+                pwd: _this.accessKey,
+                source_text: _this.sourceText
+              })
+            .then(function (response) {
+              _this.showDialog(true, "获取成功!")
+              myVideo.load();
+              _this.realUrl = response.data.list[0];
+              myVideo.pause();
+            })
+            .catch(function (error) {
+              _this.showDialog(false, "获取失败：" + error.response.data.message)
+            });
+        },
+        showDialog: function(success, content, dur = 2000) {
+          this.msg.show = true
+          this.msg.content = content
+          this.msg.color = success ? '#162312' : '#2a1215'
+          this.msg.bdColor = success ? '#274916' : '#58181c'
+          setTimeout(() => {
+            this.msg.show = false
+          }, 2000)
+        }
+      },
+    });
+  </script>
 </html>
