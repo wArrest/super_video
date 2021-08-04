@@ -95,9 +95,15 @@
 }
 
 .fade-enter-active, .fade-leave-active{
-    transition: all 0.5s ease 
+  transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
 } 
 .fade-enter, .fade-leave{
-    transform: translateY(-10vh);
-     opacity: 0 
+  transform: translateY(-10vh);
+  -webkit-transform: translateY(-10vh);
+  -ms-transform: translateY(-10vh);
+  -o-transform: translateY(-10vh);
+  -moz-transform: translateY(-10vh);
+  opacity: 0 
 }
