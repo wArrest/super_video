@@ -3,16 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	log "github.com/sirupsen/logrus"
 	"github.com/wArrest/unwatermark"
-	"strings"
-)
-
-type MEDIA_CHANNEL string
-
-const (
-	XIGUA  MEDIA_CHANNEL = "xigua"
-	DOUYIN MEDIA_CHANNEL = "douyin"
 )
 
 type BaseParams struct {
@@ -49,48 +40,17 @@ func (a *ApiHandler) Transform(c *gin.Context) {
 		})
 		return
 	}
-	var result map[string]string
-	if strings.Contains(reqBody.SourceText, "kuaishou") {
-		ks := unwatermark.NewKs([]string{reqBody.SourceText})
-		result = ks.GetResults()
-		if _, ok := result[reqBody.SourceText]; !ok {
-			log.Warnf("无法解析的链接：%s", reqBody.SourceText)
-			c.JSON(400, gin.H{
-				"message": "无法解析的链接",
-			})
-			return
-		}
-	} else if strings.Contains(reqBody.SourceText, "douyin") {
-		douyin := unwatermark.NewDouYin([]string{reqBody.SourceText})
-		result = douyin.GetResults()
-		if _, ok := result[reqBody.SourceText]; !ok {
-			log.Warnf("无法解析的链接：%s", reqBody.SourceText)
-			c.JSON(400, gin.H{
-				"message": "无法解析的链接",
-			})
-			return
-		}
-	} else if strings.Contains(reqBody.SourceText, "cc.oceanengine.com") {
-		douyin := unwatermark.NewGuliang([]string{reqBody.SourceText})
-		result = douyin.GetResults()
-		if _, ok := result[reqBody.SourceText]; !ok {
-			log.Warnf("无法解析的链接：%s", reqBody.SourceText)
-			c.JSON(400, gin.H{
-				"message": "无法解析的链接",
-			})
-			return
-		}
-	}
-	rUrls := []string{}
-	for _, realUrl := range result {
-		if realUrl != "" {
-			rUrls = append(rUrls, realUrl)
-		}
-	}
-	if len(rUrls) == 0 {
+	media := unwatermark.GetMedia(reqBody.SourceText)
+	if media == nil {
 		c.JSON(400, gin.H{
-			"message": "获取失败",
-			"list":    rUrls,
+			"message": "暂不支持的媒体！",
+		})
+		return
+	}
+	rUrls, err := media.GetRealLink(reqBody.SourceText)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
 		})
 		return
 	}
