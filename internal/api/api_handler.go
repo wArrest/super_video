@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/wArrest/unwatermark"
 )
+
 type BaseParams struct {
 	AccessPwd   string
 	AccessIPMap map[string]byte
@@ -46,7 +47,7 @@ func (a *ApiHandler) Transform(c *gin.Context) {
 		})
 		return
 	}
-	rUrls, err := media.GetRealLink(reqBody.SourceText)
+	rUrl, err := media.GetRealLink(reqBody.SourceText)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err.Error(),
@@ -55,6 +56,7 @@ func (a *ApiHandler) Transform(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{
 		"message": "获取成功",
-		"list":    rUrls,
+		"list":    []string{},
+		"rUrl":    rUrl,
 	})
 }

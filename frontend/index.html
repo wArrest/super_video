@@ -73,7 +73,7 @@
             .then(function (response) {
               _this.showDialog(true, "获取成功!")
               myVideo.load();
-              _this.realUrl = response.data.list[0];
+              _this.realUrl = response.data.rUrl;
               myVideo.pause();
             })
             .catch(function (error) {
