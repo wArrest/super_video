@@ -5,7 +5,6 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/wArrest/unwatermark"
 )
-
 type BaseParams struct {
 	AccessPwd   string
 	AccessIPMap map[string]byte
